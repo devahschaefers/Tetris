@@ -1,0 +1,157 @@
+    "oBlock": [
+               [[Block(-1), Block(-1), Block(-1), Block(-1)], 
+                [Block(-1), Block(-1), Block(-1), Block(-1)], 
+                [Block(-1), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(-1)], 
+                [Block(-1), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(-1)]],
+      
+               [[Block(-1), Block(-1), Block(-1), Block(-1)], 
+                [Block(-1), Block(-1), Block(-1), Block(-1)], 
+                [Block(-1), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(-1)], 
+                [Block(-1), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(-1)]],
+      
+               [[Block(-1), Block(-1), Block(-1), Block(-1)], 
+                [Block(-1), Block(-1), Block(-1), Block(-1)], 
+                [Block(-1), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(-1)], 
+                [Block(-1), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(-1)]],
+      
+               [[Block(-1), Block(-1), Block(-1), Block(-1)], 
+                [Block(-1), Block(-1), Block(-1), Block(-1)], 
+                [Block(-1), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(-1)], 
+                [Block(-1), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(-1)]]
+              ],
+    "iBlock": [
+               [[Block(-1), Block(-1), Block(-1), Block(-1)], 
+                [Block(-1), Block(-1), Block(-1), Block(-1)], 
+                [Block(Colors.RED), Block(Colors.RED), Block(Colors.RED), Block(Colors.RED)], 
+                [Block(-1), Block(-1), Block(-1), Block(-1)]],
+      
+               [[Block(-1), Block(-1), Block(Colors.RED), Block(-1)], 
+                [Block(-1), Block(-1), Block(Colors.RED), Block(-1)], 
+                [Block(-1), Block(-1), Block(Colors.RED), Block(-1)], 
+                [Block(-1), Block(-1), Block(Colors.RED), Block(-1)]],
+      
+               [[Block(-1), Block(-1), Block(-1), Block(-1)], 
+                [Block(-1), Block(-1), Block(-1), Block(-1)], 
+                [Block(Colors.RED), Block(Colors.RED), Block(Colors.RED), Block(Colors.RED)], 
+                [Block(-1), Block(-1), Block(-1), Block(-1)]],
+      
+               [[Block(-1), Block(Colors.RED), Block(-1), Block(-1)], 
+                [Block(-1), Block(Colors.RED), Block(-1), Block(-1)], 
+                [Block(-1), Block(Colors.RED), Block(-1), Block(-1)], 
+                [Block(-1), Block(Colors.RED), Block(-1), Block(-1)]]
+              ],
+    "jBlock": [
+                [[Block(-1), Block(-1), Block(-1), Block(-1)], 
+                 [Block(-1), Block(-1), Block(-1), Block(-1)], 
+                 [Block(Colors.ORANGE), Block(-1), Block(-1), Block(-1)], 
+                 [Block(Colors.ORANGE), Block(Colors.ORANGE), Block(Colors.ORANGE), Block(-1)]],
+      
+                [[Block(-1), Block(-1), Block(-1), Block(-1)],
+                 [Block(-1), Block(-1), Block(Colors.ORANGE), Block(Colors.ORANGE)], 
+                 [Block(-1), Block(-1), Block(Colors.ORANGE), Block(-1)], 
+                 [Block(-1), Block(-1), Block(Colors.ORANGE), Block(-1)]],
+      
+                [[Block(-1), Block(-1), Block(-1), Block(-1)], 
+                 [Block(-1), Block(-1), Block(-1), Block(-1)], 
+                 [Block(-1), Block(Colors.ORANGE), Block(Colors.ORANGE), Block(Colors.ORANGE)], 
+                 [Block(-1), Block(-1), Block(-1), Block(Colors.ORANGE)]],
+      
+                [[Block(-1), Block(-1), Block(-1), Block(-1)],
+                 [Block(-1), Block(Colors.ORANGE), Block(-1), Block(-1)], 
+                 [Block(-1), Block(Colors.ORANGE), Block(-1), Block(-1)], 
+                 [Block(Colors.ORANGE), Block(Colors.ORANGE), Block(-1), Block(-1)]],
+              ],
+    "lBlock": [
+                 [[Block(-1), Block(-1), Block(-1), Block(-1)], 
+                  [Block(-1), Block(-1), Block(-1), Block(-1)],
+                  [Block(-1), Block(-1), Block(-1), Block(Colors.BLUE)],
+                  [Block(-1), Block(Colors.BLUE), Block(Colors.BLUE), Block(Colors.BLUE)]],
+      
+                 [[Block(-1), Block(-1), Block(-1), Block(-1)],
+                  [Block(-1), Block(-1), Block(Colors.BLUE), Block(-1)], 
+                  [Block(-1), Block(-1), Block(Colors.BLUE), Block(-1)], 
+                  [Block(-1), Block(-1), Block(Colors.BLUE), Block(Colors.BLUE)]],
+      
+                 [[Block(-1), Block(-1), Block(-1), Block(-1)],
+                  [Block(-1), Block(-1), Block(-1), Block(-1)],
+                  [Block(Colors.BLUE), Block(Colors.BLUE), Block(Colors.BLUE), Block(-1)], 
+                  [Block(Colors.BLUE), Block(-1), Block(-1), Block(-1)]],
+      
+                 [[Block(-1), Block(-1), Block(-1), Block(-1)],
+                  [Block(Colors.BLUE), Block(Colors.BLUE), Block(-1), Block(-1)], 
+                  [Block(-1), Block(Colors.BLUE), Block(-1), Block(-1)], 
+                  [Block(-1), Block(Colors.BLUE), Block(-1), Block(-1)]]
+              ],
+    "sBlock": [
+                 [[Block(-1), Block(-1), Block(-1), Block(-1)],
+                  [Block(-1), Block(-1), Block(-1), Block(-1)],
+                  [Block(-1), Block(Colors.PURPLE), Block(Colors.PURPLE), Block(-1)],
+                  [Block(Colors.PURPLE), Block(Colors.PURPLE), Block(-1), Block(-1)]],
+      
+                 [[Block(-1), Block(-1), Block(-1), Block(-1)], 
+                  [Block(-1), Block(Colors.PURPLE), Block(-1), Block(-1)], 
+                  [Block(-1), Block(Colors.PURPLE), Block(Colors.PURPLE), Block(-1)], 
+                  [Block(-1), Block(-1), Block(Colors.PURPLE), Block(-1)]],
+      
+                 [[Block(-1), Block(-1), Block(-1), Block(-1)], 
+                  [Block(-1), Block(-1), Block(-1), Block(-1)], 
+                  [Block(-1), Block(Colors.PURPLE), Block(Colors.PURPLE), Block(-1)], 
+                  [Block(Colors.PURPLE), Block(Colors.PURPLE), Block(-1), Block(-1)]],
+      
+                 [[Block(-1), Block(-1), Block(-1), Block(-1)],
+                  [Block(Colors.PURPLE), Block(-1), Block(-1), Block(-1)], 
+                  [Block(Colors.PURPLE), Block(Colors.PURPLE), Block(-1), Block(-1)],
+                  [Block(-1), Block(Colors.PURPLE), Block(-1), Block(-1)]]
+              ],
+    "zBlock": [
+                [
+                  [Block(-1), Block(-1), Block(-1), Block(-1)], 
+                  [Block(-1), Block(-1), Block(-1), Block(-1)],
+                  [Block(-1), Block(Colors.GREEN), Block(Colors.GREEN), Block(-1)], 
+                  [Block(Colors.GREEN), Block(Colors.GREEN), Block(-1), Block(-1)]
+                ],
+                [
+                  [Block(-1), Block(-1), Block(-1), Block(-1)], 
+                  [Block(-1), Block(Colors.GREEN), Block(-1), Block(-1)],
+                  [Block(-1), Block(Colors.GREEN), Block(Colors.GREEN), Block(-1)], 
+                  [Block(-1), Block(-1), Block(Colors.GREEN), Block(-1)]
+                ],
+                [
+                  [Block(-1), Block(-1), Block(-1), Block(-1)], 
+                  [Block(-1), Block(-1), Block(-1), Block(-1)],
+                  [Block(-1), Block(Colors.GREEN), Block(Colors.GREEN), Block(-1)], 
+                  [Block(Colors.GREEN), Block(Colors.GREEN), Block(-1), Block(-1)]
+                ],
+                [
+                  [Block(-1), Block(-1), Block(-1), Block(-1)], 
+                  [Block(Colors.GREEN), Block(-1), Block(-1), Block(-1)],
+                  [Block(Colors.GREEN), Block(Colors.GREEN), Block(-1), Block(-1)], 
+                  [Block(-1), Block(Colors.GREEN), Block(-1), Block(-1)]
+                ],
+              ],
+    "tBlock": [
+                [
+                  [Block(-1), Block(-1), Block(-1), Block(-1)], 
+                  [Block(-1), Block(-1), Block(-1), Block(-1)], 
+                  [Block(-1), Block(Colors.CYAN), Block(-1), Block(-1)], 
+                  [Block(Colors.CYAN), Block(Colors.CYAN), Block(Colors.CYAN), Block(-1)]
+                ],
+                [
+                  [Block(-1), Block(-1), Block(-1), Block(-1)], 
+                  [Block(-1), Block(Colors.CYAN), Block(-1), Block(-1)], 
+                  [Block(-1), Block(Colors.CYAN), Block(Colors.CYAN), Block(-1)], 
+                  [Block(-1), Block(Colors.CYAN), Block(-1), Block(-1)]
+                ],
+                [
+                  [Block(-1), Block(-1), Block(-1), Block(-1)], 
+                  [Block(-1), Block(-1), Block(-1), Block(-1)], 
+                  [Block(Colors.CYAN), Block(Colors.CYAN), Block(Colors.CYAN), Block(-1)], 
+                  [Block(-1), Block(Colors.CYAN), Block(-1), Block(-1)]
+                ],
+                [
+                  [Block(-1), Block(-1), Block(-1), Block(-1)], 
+                  [Block(-1), Block(Colors.CYAN), Block(-1), Block(-1)], 
+                  [Block(Colors.CYAN), Block(Colors.CYAN), Block(-1), Block(-1)], 
+                  [Block(-1), Block(Colors.CYAN), Block(-1), Block(-1)]
+                ]
+              ]

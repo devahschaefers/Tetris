@@ -1,19 +1,23 @@
 import pygame
 from colors import Colors
-
+import os
 
 def printBoard(board):
+
     width = len(board[0])
     for j in range(-1, -width - 1, -1):
         for i in board:
-            print(i[j], end=" ")
+            print(i[j].color, end=" ")
         print("")
 
-
-class Shape():
+class Block:
+  def __init__(self, color):
+    self.color = color
+    
+class Shape(Block):
     def __init__(self, shape, color):
+        Block.__init__(self, color)
         self.shape = shape
-        self.color = color
 
     def rotate(self, direction):
         pass
@@ -21,160 +25,160 @@ class Shape():
 
 rawShapes = {
     "oBlock": [
-               [[0, 0, 0, 0], 
-                [0, 0, 0, 0], 
-                [0, 1, 1, 0], 
-                [0, 1, 1, 0]],
+               [[Block(0), Block(0), Block(0), Block(0)], 
+                [Block(0), Block(0), Block(0), Block(0)], 
+                [Block(0), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(0)], 
+                [Block(0), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(0)]],
       
-               [[0, 0, 0, 0], 
-                [0, 0, 0, 0], 
-                [0, 1, 1, 0], 
-                [0, 1, 1, 0]],
+               [[Block(0), Block(0), Block(0), Block(0)], 
+                [Block(0), Block(0), Block(0), Block(0)], 
+                [Block(0), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(0)], 
+                [Block(0), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(0)]],
       
-               [[0, 0, 0, 0], 
-                [0, 0, 0, 0], 
-                [0, 1, 1, 0], 
-                [0, 1, 1, 0]],
+               [[Block(0), Block(0), Block(0), Block(0)], 
+                [Block(0), Block(0), Block(0), Block(0)], 
+                [Block(0), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(0)], 
+                [Block(0), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(0)]],
       
-               [[0, 0, 0, 0], 
-                [0, 0, 0, 0], 
-                [0, 1, 1, 0], 
-                [0, 1, 1, 0]]
+               [[Block(0), Block(0), Block(0), Block(0)], 
+                [Block(0), Block(0), Block(0), Block(0)], 
+                [Block(0), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(0)], 
+                [Block(0), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(0)]]
               ],
     "iBlock": [
-               [[0, 0, 0, 0], 
-                [0, 0, 0, 0], 
-                [1, 1, 1, 1], 
-                [0, 0, 0, 0]],
+               [[Block(0), Block(0), Block(0), Block(0)], 
+                [Block(0), Block(0), Block(0), Block(0)], 
+                [Block(Colors.RED), Block(Colors.RED), Block(Colors.RED), Block(Colors.RED)], 
+                [Block(0), Block(0), Block(0), Block(0)]],
       
-               [[0, 0, 1, 0], 
-                [0, 0, 1, 0], 
-                [0, 0, 1, 0], 
-                [0, 0, 1, 0]],
+               [[Block(0), Block(0), Block(Colors.RED), Block(0)], 
+                [Block(0), Block(0), Block(Colors.RED), Block(0)], 
+                [Block(0), Block(0), Block(Colors.RED), Block(0)], 
+                [Block(0), Block(0), Block(Colors.RED), Block(0)]],
       
-               [[0, 0, 0, 0], 
-                [0, 0, 0, 0], 
-                [1, 1, 1, 1], 
-                [0, 0, 0, 0]],
+               [[Block(0), Block(0), Block(0), Block(0)], 
+                [Block(0), Block(0), Block(0), Block(0)], 
+                [Block(Colors.RED), Block(Colors.RED), Block(Colors.RED), Block(Colors.RED)], 
+                [Block(0), Block(0), Block(0), Block(0)]],
       
-               [[0, 1, 0, 0], 
-                [0, 1, 0, 0], 
-                [0, 1, 0, 0], 
-                [0, 1, 0, 0]]
+               [[Block(0), Block(Colors.RED), Block(0), Block(0)], 
+                [Block(0), Block(Colors.RED), Block(0), Block(0)], 
+                [Block(0), Block(Colors.RED), Block(0), Block(0)], 
+                [Block(0), Block(Colors.RED), Block(0), Block(0)]]
               ],
     "jBlock": [
-                [[0, 0, 0, 0], 
-                 [0, 0, 0, 0], 
-                 [1, 0, 0, 0], 
-                 [1, 1, 1, 0]],
+                [[Block(0), Block(0), Block(0), Block(0)], 
+                 [Block(0), Block(0), Block(0), Block(0)], 
+                 [Block(Colors.ORANGE), Block(0), Block(0), Block(0)], 
+                 [Block(Colors.ORANGE), Block(Colors.ORANGE), Block(Colors.ORANGE), Block(0)]],
       
-                [[0, 0, 0, 0],
-                 [0, 0, 1, 1], 
-                 [0, 0, 1, 0], 
-                 [0, 0, 1, 0]],
+                [[Block(0), Block(0), Block(0), Block(0)],
+                 [Block(0), Block(0), Block(Colors.ORANGE), Block(Colors.ORANGE)], 
+                 [Block(0), Block(0), Block(Colors.ORANGE), Block(0)], 
+                 [Block(0), Block(0), Block(Colors.ORANGE), Block(0)]],
       
-                [[0, 0, 0, 0], 
-                 [0, 0, 0, 0], 
-                 [0, 1, 1, 1], 
-                 [0, 0, 0, 1]],
+                [[Block(0), Block(0), Block(0), Block(0)], 
+                 [Block(0), Block(0), Block(0), Block(0)], 
+                 [Block(0), Block(Colors.ORANGE), Block(Colors.ORANGE), Block(Colors.ORANGE)], 
+                 [Block(0), Block(0), Block(0), Block(Colors.ORANGE)]],
       
-                [[0, 0, 0, 0],
-                 [0, 1, 0, 0], 
-                 [0, 1, 0, 0], 
-                 [1, 1, 0, 0]],
+                [[Block(0), Block(0), Block(0), Block(0)],
+                 [Block(0), Block(Colors.ORANGE), Block(0), Block(0)], 
+                 [Block(0), Block(Colors.ORANGE), Block(0), Block(0)], 
+                 [Block(Colors.ORANGE), Block(Colors.ORANGE), Block(0), Block(0)]],
               ],
     "lBlock": [
-                 [[0, 0, 0, 0], 
-                  [0, 0, 0, 0],
-                  [0, 0, 0, 1],
-                  [0, 1, 1, 1]],
+                 [[Block(0), Block(0), Block(0), Block(0)], 
+                  [Block(0), Block(0), Block(0), Block(0)],
+                  [Block(0), Block(0), Block(0), Block(Colors.BLUE)],
+                  [Block(0), Block(Colors.BLUE), Block(Colors.BLUE), Block(Colors.BLUE)]],
       
-                 [[0, 0, 0, 0],
-                  [0, 0, 1, 0], 
-                  [0, 0, 1, 0], 
-                  [0, 0, 1, 1]],
+                 [[Block(0), Block(0), Block(0), Block(0)],
+                  [Block(0), Block(0), Block(Colors.BLUE), Block(0)], 
+                  [Block(0), Block(0), Block(Colors.BLUE), Block(0)], 
+                  [Block(0), Block(0), Block(Colors.BLUE), Block(Colors.BLUE)]],
       
-                 [[0, 0, 0, 0],
-                  [0, 0, 0, 0],
-                  [1, 1, 1, 0], 
-                  [1, 0, 0, 0]],
+                 [[Block(0), Block(0), Block(0), Block(0)],
+                  [Block(0), Block(0), Block(0), Block(0)],
+                  [Block(Colors.BLUE), Block(Colors.BLUE), Block(Colors.BLUE), Block(0)], 
+                  [Block(Colors.BLUE), Block(0), Block(0), Block(0)]],
       
-                 [[0, 0, 0, 0],
-                  [1, 1, 0, 0], 
-                  [0, 1, 0, 0], 
-                  [0, 1, 0, 0]]
+                 [[Block(0), Block(0), Block(0), Block(0)],
+                  [Block(Colors.BLUE), Block(Colors.BLUE), Block(0), Block(0)], 
+                  [Block(0), Block(Colors.BLUE), Block(0), Block(0)], 
+                  [Block(0), Block(Colors.BLUE), Block(0), Block(0)]]
               ],
     "sBlock": [
-                 [[0, 0, 0, 0],
-                  [0, 0, 0, 0],
-                  [0, 1, 1, 0],
-                  [1, 1, 0, 0]],
+                 [[Block(0), Block(0), Block(0), Block(0)],
+                  [Block(0), Block(0), Block(0), Block(0)],
+                  [Block(0), Block(Colors.PURPLE), Block(Colors.PURPLE), Block(0)],
+                  [Block(Colors.PURPLE), Block(Colors.PURPLE), Block(0), Block(0)]],
       
-                 [[0, 0, 0, 0], 
-                  [0, 1, 0, 0], 
-                  [0, 1, 1, 0], 
-                  [0, 0, 1, 0]],
+                 [[Block(0), Block(0), Block(0), Block(0)], 
+                  [Block(0), Block(Colors.PURPLE), Block(0), Block(0)], 
+                  [Block(0), Block(Colors.PURPLE), Block(Colors.PURPLE), Block(0)], 
+                  [Block(0), Block(0), Block(Colors.PURPLE), Block(0)]],
       
-                 [[0, 0, 0, 0], 
-                  [0, 0, 0, 0], 
-                  [0, 1, 1, 0], 
-                  [1, 1, 0, 0]],
+                 [[Block(0), Block(0), Block(0), Block(0)], 
+                  [Block(0), Block(0), Block(0), Block(0)], 
+                  [Block(0), Block(Colors.PURPLE), Block(Colors.PURPLE), Block(0)], 
+                  [Block(Colors.PURPLE), Block(Colors.PURPLE), Block(0), Block(0)]],
       
-                 [[0, 0, 0, 0],
-                  [1, 0, 0, 0], 
-                  [1, 1, 0, 0],
-                  [0, 1, 0, 0]]
+                 [[Block(0), Block(0), Block(0), Block(0)],
+                  [Block(Colors.PURPLE), Block(0), Block(0), Block(0)], 
+                  [Block(Colors.PURPLE), Block(Colors.PURPLE), Block(0), Block(0)],
+                  [Block(0), Block(Colors.PURPLE), Block(0), Block(0)]]
               ],
     "zBlock": [
                 [
-                  [0, 0, 0, 0], 
-                  [0, 0, 0, 0],
-                  [0, 1, 1, 0], 
-                  [1, 1, 0, 0]
+                  [Block(0), Block(0), Block(0), Block(0)], 
+                  [Block(0), Block(0), Block(0), Block(0)],
+                  [Block(0), Block(Colors.GREEN), Block(Colors.GREEN), Block(0)], 
+                  [Block(Colors.GREEN), Block(Colors.GREEN), Block(0), Block(0)]
                 ],
                 [
-                  [0, 0, 0, 0], 
-                  [0, 1, 0, 0],
-                  [0, 1, 1, 0], 
-                  [0, 0, 1, 0]
+                  [Block(0), Block(0), Block(0), Block(0)], 
+                  [Block(0), Block(Colors.GREEN), Block(0), Block(0)],
+                  [Block(0), Block(Colors.GREEN), Block(Colors.GREEN), Block(0)], 
+                  [Block(0), Block(0), Block(Colors.GREEN), Block(0)]
                 ],
                 [
-                  [0, 0, 0, 0], 
-                  [0, 0, 0, 0],
-                  [0, 1, 1, 0], 
-                  [1, 1, 0, 0]
+                  [Block(0), Block(0), Block(0), Block(0)], 
+                  [Block(0), Block(0), Block(0), Block(0)],
+                  [Block(0), Block(Colors.GREEN), Block(Colors.GREEN), Block(0)], 
+                  [Block(Colors.GREEN), Block(Colors.GREEN), Block(0), Block(0)]
                 ],
                 [
-                  [0, 0, 0, 0], 
-                  [1, 0, 0, 0],
-                  [1, 1, 0, 0], 
-                  [0, 1, 0, 0]
+                  [Block(0), Block(0), Block(0), Block(0)], 
+                  [Block(Colors.GREEN), Block(0), Block(0), Block(0)],
+                  [Block(Colors.GREEN), Block(Colors.GREEN), Block(0), Block(0)], 
+                  [Block(0), Block(Colors.GREEN), Block(0), Block(0)]
                 ],
               ],
     "tBlock": [
                 [
-                  [0, 0, 0, 0], 
-                  [0, 0, 0, 0], 
-                  [0, 1, 0, 0], 
-                  [1, 1, 1, 0]
+                  [Block(0), Block(0), Block(0), Block(0)], 
+                  [Block(0), Block(0), Block(0), Block(0)], 
+                  [Block(0), Block(Colors.CYAN), Block(0), Block(0)], 
+                  [Block(Colors.CYAN), Block(Colors.CYAN), Block(Colors.CYAN), Block(0)]
                 ],
                 [
-                  [0, 0, 0, 0], 
-                  [0, 1, 0, 0], 
-                  [0, 1, 1, 0], 
-                  [0, 1, 0, 0]
+                  [Block(0), Block(0), Block(0), Block(0)], 
+                  [Block(0), Block(Colors.CYAN), Block(0), Block(0)], 
+                  [Block(0), Block(Colors.CYAN), Block(Colors.CYAN), Block(0)], 
+                  [Block(0), Block(Colors.CYAN), Block(0), Block(0)]
                 ],
                 [
-                  [0, 0, 0, 0], 
-                  [0, 0, 0, 0], 
-                  [1, 1, 1, 0], 
-                  [0, 1, 0, 0]
+                  [Block(0), Block(0), Block(0), Block(0)], 
+                  [Block(0), Block(0), Block(0), Block(0)], 
+                  [Block(Colors.CYAN), Block(Colors.CYAN), Block(Colors.CYAN), Block(0)], 
+                  [Block(0), Block(Colors.CYAN), Block(0), Block(0)]
                 ],
                 [
-                  [0, 0, 0, 0], 
-                  [0, 1, 0, 0], 
-                  [1, 1, 0, 0], 
-                  [0, 1, 0, 0]
+                  [Block(0), Block(0), Block(0), Block(0)], 
+                  [Block(0), Block(Colors.CYAN), Block(0), Block(0)], 
+                  [Block(Colors.CYAN), Block(Colors.CYAN), Block(0), Block(0)], 
+                  [Block(0), Block(Colors.CYAN), Block(0), Block(0)]
                 ]
               ]
 }
@@ -192,18 +196,21 @@ shapes = [
 class Game():
     def __init__(self, width, height):
         self.board = []
-
-    def drawDrawShapeAtLocation(self):
-        #-----set up board -------------
+        self.width = width
+        self.height = height
+    #-----set up board -------------
         row = []
-        num = 0
         for i in range(self.width):
             for j in range(self.height):
-                row.append(num)
+                row.append(Block(0))
             self.board.append(row.copy())
             row.clear()
 
     #---------------------------------
+    
+    def drawDrawShapeAtLocation(self):
+      pass
+    
 
     def setupgame(self):
         pass
