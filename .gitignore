@@ -1,7 +1,9 @@
 *nix
 *toml
 *.lock
-.replit
-.breakpoints
+*.replit
+*.breakpoints
+*.cfg
+
 venv/
 __pycache__/
