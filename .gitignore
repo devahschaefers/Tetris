@@ -4,6 +4,7 @@
 *replit
 *breakpoints
 *cfg
+.DS_Store
 
 venv/
 __pycache__/
