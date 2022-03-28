@@ -5,6 +5,7 @@
 *breakpoints
 *cfg
 .DS_Store
+test.py
 
 venv/
 __pycache__/

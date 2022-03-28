@@ -7,4 +7,5 @@ class Colors(Enum):
   RED = 5
   PURPLE = 6
   GREEN = 7
+  NO_COLOR = 0
   
