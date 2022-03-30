@@ -1,7 +1,12 @@
 import pygame
 from colors import Colors
 import random
+import os
+import pathlib
 import copy
+
+
+PATH = pathlib.Path().absolute()
 
 
 def printShape(shape):
@@ -16,6 +21,7 @@ def printShape(shape):
   print('\n')
   
 def printBoard(board):
+    print("Printing Board:\n")
     width = len(board[0])
     for j in range(-1, -width - 1, -1):
         for i in board:
@@ -215,8 +221,6 @@ shapes = [
 
 class Game():
 
-    def p_findtopRightofShape(shape):
-      pass
     def __init__(self, width=10, height=40):
         self.board = []
         self.width = width
@@ -234,21 +238,17 @@ class Game():
     #---------------------------------
     
     def drawDrawShapeAtLocation(self, location, Tetromino = None):
+      ##assumes tetormino is a shape object
       if Tetromino == None:
         Tetromino = self.currentTetrominoFalling[0]
-      printShape(Tetromino)
-      y_lengthOfTetromino = len(Tetromino.shape[Tetromino.currentRotation]) - 1
-      x_lengthOfTetromino = len(Tetromino.shape[Tetromino.currentRotation])
-      print("y length:", y_lengthOfTetromino)
+      y_lengthOfTetromino = len(Tetromino.shape[Tetromino.currentRotation])
+      x_lengthOfTetromino = len(Tetromino.shape[Tetromino.currentRotation][0])
       j = 0 #x
       i = 0 #y
-      for y in range(location[1], location[1]+len(Tetromino.shape[Tetromino.currentRotation])):
-        for x in range(location[0], location[0]+len(Tetromino.shape[Tetromino.currentRotation][0])):
-          print(i, j)
-          self.board[x][y] = Tetromino.shape[Tetromino.currentRotation][i][j]
+      for y in range(location[1], location[1] - y_lengthOfTetromino, -1):
+        for x in range(location[0], location[0]+ x_lengthOfTetromino):
+          self.board[x][y] = Tetromino.shape[Tetromino.currentRotation][j][i]
           i += 1
-          
-        print('');
         j += 1
         i = 0
     
@@ -257,8 +257,6 @@ class Game():
 
     def draw(self):
         pass
-    def drawTetrominoAt(location=[5,40], Tetrino = copy.deepcopy(random.choice(shapes))):
-      pass
     
     def spawnTetromino(self, Tetromino=random.choice(shapes)):
       self.numberOfTetrominosSpawned += 1
@@ -267,8 +265,6 @@ class Game():
       
 
 game = Game()
-
-game.spawnTetromino()
-game.drawDrawShapeAtLocation([3, 33], shapes[2])
-print(game.board[3][36])
-printBoard(game.board)
+while True:
+    printBoard(game.board)
+    os.system(f"{}".PATH)

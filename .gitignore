@@ -6,8 +6,12 @@
 *cfg
 .DS_Store
 test.py
+.idea
 
 venv/
 __pycache__/
 venv/
+bin/
+include/
+lib/
 .config/
