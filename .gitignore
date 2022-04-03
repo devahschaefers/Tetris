@@ -5,8 +5,9 @@
 *breakpoints
 *cfg
 .DS_Store
-test.py
 .idea
+test.py
+
 
 venv/
 __pycache__/
