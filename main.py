@@ -1,36 +1,46 @@
+'''
+ERRORS
+
+-200 = IndexError
+-100 = Hit an object
+
+
+'''
 import pygame
-from colors import Colors
 import random
-import os
-import pathlib
-import copy
-import time
-from colors import Colors
+import copy, time, os
+from classes import Colors, Shape, Block
+import mShapes
+from mShapes import shapes
 
-class Block:
-  def __init__(self, color= Colors.NO_COLOR, shapeID = 0, location = "NOT ON THE BOARD"):
-    self.color = color
-    self.value = color.value
-    self.location = location
-    self.shapeID = shapeID #0 means empty class Shape(Block):
+pygame.init()
+pygame.display.set_caption('Tetris')
 
-class Shape(Block):
-    def __init__(self, shape, color, name, id = "NOT ON THE BOARD"):
-      Block.__init__(self, color, shapeID = id)
-      self.shape = shape
-      self.id = id # will be assigned when it is spawned
-      self.name = name
-      self.currentRotation = 0
 
-      if (color.value != 0):
-        self.isEmpty = False
-      else:
-        self.isEmpty = True
+#--------------------------CONSTANTS--------------------------
+SPRITE_SIZE = 32
+#colors
+GRAY = (128, 128, 128)
+#sprites
+img_Blue = pygame.transform.scale(pygame.image.load("Sprites/Blue.png"), [32, 32])
+img_Cyan = pygame.transform.scale(pygame.image.load("Sprites/Cyan.png"), [32, 32])
+img_Green = pygame.transform.scale(pygame.image.load("Sprites/Green.png"), [32, 32])
+img_Orange = pygame.transform.scale(pygame.image.load("Sprites/Orange.png"), [32, 32])
+img_Purple = pygame.transform.scale(pygame.image.load("Sprites/Purple.png"), [32, 32])
+img_Red = pygame.transform.scale(pygame.image.load("Sprites/Red.png"), [32, 32])
+img_White = pygame.transform.scale(pygame.image.load("Sprites/White.png"), [32, 32])
+img_Yellow = pygame.transform.scale(pygame.image.load("Sprites/Yellow.png"), [32, 32])
+#events
+SECONDPASSED = pygame.USEREVENT + 1
 
-    def rotate(self, direction):
-        pass
+#other
+PRINT_PERMANENT = ""
 
-DEFUALT_BLOCK = Block()
+def coordinates_to_pixel_loc(postion):  # maybe think of a better name
+    postion = list(postion)
+    postion[0] = postion[0] * SPRITE_SIZE
+    postion[1] = postion[1] * SPRITE_SIZE
+    return (postion[0], postion[1])
 
 def printShape(shape):
   length_x = len(shape.shape[shape.currentRotation][0])
@@ -46,189 +56,23 @@ def printShape(shape):
 def printBoard(board):
     print("Printing Board:\n")
     width = len(board[0])
-    for j in range(-1, -width - 1, -1):
-        for i in board:
+    for j in range(0, width - 1): #walks throught the board from right to left 
+        for i in board: #walks through the each row in the board
             print(i[j].color.value, end=" ")
         print("")
 
     print("")
-
-rawShapes = {
-    "oBlock": [
-               [ 
-                [Block(Colors.NO_COLOR), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(Colors.NO_COLOR)], 
-                [Block(Colors.NO_COLOR), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(Colors.NO_COLOR)]],
-      
-               [ 
-                [Block(Colors.NO_COLOR), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(Colors.NO_COLOR)], 
-                [Block(Colors.NO_COLOR), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(Colors.NO_COLOR)]],
-      
-               [ 
-                [Block(Colors.NO_COLOR), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(Colors.NO_COLOR)], 
-                [Block(Colors.NO_COLOR), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(Colors.NO_COLOR)]],
-      
-               [ 
-                [Block(Colors.NO_COLOR), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(Colors.NO_COLOR)], 
-                [Block(Colors.NO_COLOR), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(Colors.NO_COLOR)]]
-              ],
-    "iBlock": [ 
-                [
-                  [Block(Colors.RED), Block(Colors.RED), Block(Colors.RED), Block(Colors.RED)]
-                ],
-      
-               [
-                [Block(Colors.RED)], 
-                [Block(Colors.RED)], 
-                [Block(Colors.RED)], 
-                [Block(Colors.RED)]
-               ],
-      
-              [
-                [Block(Colors.NO_COLOR),Block(Colors.NO_COLOR),Block(Colors.NO_COLOR),Block(Colors.NO_COLOR)]
-              ],
-              [
-                [Block(Colors.RED), Block(Colors.RED), Block(Colors.RED), Block(Colors.RED)]
-              ],
-      
-              [
-                [Block(Colors.NO_COLOR), Block(Colors.RED)], 
-                [Block(Colors.NO_COLOR), Block(Colors.RED)], 
-                [Block(Colors.NO_COLOR), Block(Colors.RED)], 
-                [Block(Colors.NO_COLOR), Block(Colors.RED)]
-              ]
-            ],
-    "jBlock": [
-                [
-                 [Block(Colors.ORANGE), Block(Colors.NO_COLOR), Block(Colors.NO_COLOR)], 
-                 [Block(Colors.ORANGE), Block(Colors.ORANGE), Block(Colors.ORANGE)]
-                ],
-      
-                [
-                 [Block(Colors.NO_COLOR), Block(Colors.ORANGE), Block(Colors.ORANGE)], 
-                 [Block(Colors.NO_COLOR), Block(Colors.ORANGE), Block(Colors.NO_COLOR)], 
-                 [Block(Colors.NO_COLOR), Block(Colors.ORANGE), Block(Colors.NO_COLOR)]
-                ],
-      
-                [  
-                 [Block(Colors.ORANGE),   Block(Colors.ORANGE),   Block(Colors.ORANGE)], 
-                 [Block(Colors.NO_COLOR), Block(Colors.NO_COLOR), Block(Colors.ORANGE)]
-                ],
-                [
-                 [Block(Colors.NO_COLOR), Block(Colors.ORANGE), Block(Colors.NO_COLOR)], 
-                 [Block(Colors.NO_COLOR), Block(Colors.ORANGE), Block(Colors.NO_COLOR)], 
-                 [Block(Colors.ORANGE), Block(Colors.ORANGE), Block(Colors.NO_COLOR)]
-                ]
-              ],
-    "lBlock": [
-                 [
-                  [Block(Colors.NO_COLOR), Block(Colors.NO_COLOR), Block(Colors.NO_COLOR), Block(Colors.BLUE)],
-                  [Block(Colors.NO_COLOR), Block(Colors.BLUE), Block(Colors.BLUE), Block(Colors.BLUE)]
-                 ],
-      
-                 [
-                  [Block(Colors.NO_COLOR), Block(Colors.BLUE), Block(Colors.NO_COLOR)], 
-                  [Block(Colors.NO_COLOR), Block(Colors.BLUE), Block(Colors.NO_COLOR)], 
-                  [Block(Colors.NO_COLOR), Block(Colors.BLUE), Block(Colors.BLUE)]
-                 ],
-      
-                 [
-                  [Block(Colors.BLUE), Block(Colors.BLUE), Block(Colors.BLUE), Block(Colors.NO_COLOR)], 
-                  [Block(Colors.BLUE), Block(Colors.NO_COLOR), Block(Colors.NO_COLOR), Block(Colors.NO_COLOR)]
-                 ],
-      
-                 [
-                  [Block(Colors.BLUE), Block(Colors.BLUE), Block(Colors.NO_COLOR)],  
-                  [Block(Colors.NO_COLOR), Block(Colors.BLUE), Block(Colors.NO_COLOR)],  
-                  [Block(Colors.NO_COLOR), Block(Colors.BLUE), Block(Colors.NO_COLOR)]   
-                ]
-              ],
-    "sBlock": [
-                 [
-                  [Block(Colors.NO_COLOR), Block(Colors.PURPLE), Block(Colors.PURPLE)],
-                  [Block(Colors.PURPLE), Block(Colors.PURPLE), Block(Colors.NO_COLOR)]
-                 ],
-      
-                 [ 
-                  [Block(Colors.NO_COLOR), Block(Colors.PURPLE), Block(Colors.NO_COLOR)], 
-                  [Block(Colors.NO_COLOR), Block(Colors.PURPLE), Block(Colors.PURPLE)], 
-                  [Block(Colors.NO_COLOR), Block(Colors.NO_COLOR), Block(Colors.PURPLE)]
-                 ],
-      
-                 [ 
-                  [Block(Colors.NO_COLOR), Block(Colors.PURPLE), Block(Colors.PURPLE)], 
-                  [Block(Colors.PURPLE), Block(Colors.PURPLE), Block(Colors.NO_COLOR)]
-                 ],
-      
-                 [
-                  [Block(Colors.PURPLE), Block(Colors.NO_COLOR), Block(Colors.NO_COLOR) ], 
-                  [Block(Colors.PURPLE), Block(Colors.PURPLE), Block(Colors.NO_COLOR) ],
-                  [Block(Colors.NO_COLOR), Block(Colors.PURPLE), Block(Colors.NO_COLOR)]
-                ],
-              ],
-    "zBlock": [
-                [
-                  [Block(Colors.NO_COLOR), Block(Colors.GREEN), Block(Colors.GREEN)], 
-                  [Block(Colors.GREEN), Block(Colors.GREEN), Block(Colors.NO_COLOR)]
-                ],
-                [ 
-                  [Block(Colors.GREEN), Block(Colors.NO_COLOR), Block(Colors.NO_COLOR)],
-                  [Block(Colors.GREEN), Block(Colors.GREEN), Block(Colors.NO_COLOR)], 
-                  [Block(Colors.NO_COLOR), Block(Colors.GREEN), Block(Colors.NO_COLOR)]
-                ],
-                [ 
-                  [Block(Colors.NO_COLOR), Block(Colors.NO_COLOR), Block(Colors.NO_COLOR)],
-                  [Block(Colors.NO_COLOR), Block(Colors.GREEN), Block(Colors.GREEN)], 
-                  [Block(Colors.GREEN), Block(Colors.GREEN), Block(Colors.NO_COLOR)]
-                ],
-                [ 
-                  [Block(Colors.GREEN), Block(Colors.NO_COLOR), Block(Colors.NO_COLOR)],
-                  [Block(Colors.GREEN), Block(Colors.GREEN), Block(Colors.NO_COLOR)],
-                  [Block(Colors.NO_COLOR), Block(Colors.GREEN), Block(Colors.NO_COLOR)]
-                ]
-              ],
-    "tBlock": [
-                [ 
-                  [Block(Colors.NO_COLOR), Block(Colors.CYAN), Block(Colors.NO_COLOR)], 
-                  [Block(Colors.CYAN), Block(Colors.CYAN), Block(Colors.CYAN)]
-                ],
-                [
-                  [ Block(Colors.NO_COLOR), Block(Colors.NO_COLOR), Block(Colors.NO_COLOR)], 
-                  [ Block(Colors.CYAN), Block(Colors.NO_COLOR), Block(Colors.NO_COLOR)], 
-                  [ Block(Colors.CYAN), Block(Colors.CYAN), Block(Colors.NO_COLOR)], 
-                  [ Block(Colors.CYAN), Block(Colors.NO_COLOR), Block(Colors.NO_COLOR)]
-                ],
-                [
-                  [Block(Colors.NO_COLOR), Block(Colors.NO_COLOR), Block(Colors.NO_COLOR), Block(Colors.NO_COLOR)], 
-                  [Block(Colors.NO_COLOR), Block(Colors.NO_COLOR), Block(Colors.NO_COLOR), Block(Colors.NO_COLOR)], 
-                  [Block(Colors.CYAN), Block(Colors.CYAN), Block(Colors.CYAN), Block(Colors.NO_COLOR)], 
-                  [Block(Colors.NO_COLOR), Block(Colors.CYAN), Block(Colors.NO_COLOR), Block(Colors.NO_COLOR)]
-                ],
-                [
-                  [Block(Colors.NO_COLOR), Block(Colors.CYAN), Block(Colors.NO_COLOR)],
-                  [Block(Colors.CYAN), Block(Colors.CYAN), Block(Colors.NO_COLOR)],
-                  [Block(Colors.NO_COLOR), Block(Colors.CYAN), Block(Colors.NO_COLOR)]
-                ]
-              ]
-}
-shapes = [
-    Shape(rawShapes["oBlock"], Colors.YELLOW, "oBlock"),
-    Shape(rawShapes["iBlock"], Colors.CYAN, "iBlock"),
-    Shape(rawShapes["jBlock"], Colors.BLUE, "jBlock"),
-    Shape(rawShapes["lBlock"], Colors.ORANGE, "lBlock"),
-    Shape(rawShapes["sBlock"], Colors.GREEN, "sBlock"),
-    Shape(rawShapes["zBlock"], Colors.RED, "zBlock"),
-    Shape(rawShapes['tBlock'], Colors.PURPLE, "tBlock")
-]
-
-
 class Game():
 
-  def __init__(self, width=10, height=40):
+  def __init__(self, width=10, height=20):
       self.board = []
       self.width = width
       self.height = height
       self.numberOfTetrominosSpawned = 0
       self.currentTetrominoFalling = None
+      self.size = (width * SPRITE_SIZE + 2, height * SPRITE_SIZE)
+      self.screen = pygame.display.set_mode(self.size)
+      pygame.time.set_timer(SECONDPASSED, 1000)
   #-----set up board -------------
       row = []
       for i in range(self.width):
@@ -241,8 +85,7 @@ class Game():
   def drawDrawShapeAtLocation(self, location, blockID, Tetromino = None):
     #create copy of the board which will replace the actual board if the fuction doesnt encounter errors
     board = copy.deepcopy(self.board)
-    #assumes tetormino is a shape object
-    printShape(Tetromino)
+    #assumes tetormino is a shape object)
     if Tetromino == None:
       Tetromino = self.currentTetrominoFalling[0]
     y_lengthOfTetromino = len(Tetromino.shape[Tetromino.currentRotation])
@@ -250,32 +93,48 @@ class Game():
     j = 0 #x
     i = 0 #y
     
-    for y in range(location[1], location[1] - y_lengthOfTetromino, -1):
-      for x in range(location[0], location[0]+ x_lengthOfTetromino):
+    for y in range(location[1], location[1] + Tetromino.yLength):
+      for x in range(location[0], location[0]+ Tetromino.xLength):
+
         ignoreCurrentBlock = False
-        print(x,y)
-        if self.board[x][y].color != Colors.NO_COLOR:
-          return -1
-        if Tetromino.shape[Tetromino.currentRotation][j][i].value == 0:
-          ignoreCurrentBlock = True
-        if ignoreCurrentBlock == False:
-          Block = Tetromino.shape[Tetromino.currentRotation][j][i]
-          Block.shapeID = blockID
-          Block.location = [x, y]
-          board[x][y] = Block
+
+
+        try: #incase we go outside of the bounds
+
+          if self.board[x][y].color != Colors.NO_COLOR: #check to make sure it doesnt draw on an occupied space
+            return -100
+          if Tetromino.shape[Tetromino.currentRotation][j][i].value == 0: #will wont draw over the board if the value in the shape is NO_COLOR
+            ignoreCurrentBlock = True
+
+          if ignoreCurrentBlock == False:
+
+              Block = Tetromino.shape[Tetromino.currentRotation][j][i]
+              Block.shapeID = blockID
+              Block.location = [x, y]
+              board[x][y] = Block
+
+        except IndexError: #return -200 if we go outside of the bounds
+          print("Draw Shape Function went out of range of the board at:", f"[{x}, {y}]")
+          return -200
+
+
         i += 1
       j += 1
       i = 0
     self.board = board
   
   def draw(self):
-      pass
-  
+    for collum in self.board:
+      for Block in collum:
+        if Block.color != Colors.NO_COLOR:
+          self.screen.blit(img_Blue, coordinates_to_pixel_loc(Block.location))
+       
   def spawnTetromino(self, Tetromino=random.choice(shapes)):
     self.numberOfTetrominosSpawned += 1
     Tetromino.id = self.numberOfTetrominosSpawned
     self.currentTetrominoFalling = {"shape": Tetromino, "id": Tetromino.id}
-    self.drawDrawShapeAtLocation([3, 39], Tetromino.id, Tetromino)
+    print(f"spawming {Tetromino.name}")
+    self.drawDrawShapeAtLocation([(self.width // 2) - 2, 0], Tetromino.id, Tetromino)
     return Tetromino.name
   
   def moveTetromino(self, TetrominoID, dX, dY): #delta x and delta y
@@ -289,26 +148,50 @@ class Game():
     
     board = copy.deepcopy(self.board)
     
-    for position in currentPositionOfTetromino:
-      board[position[0]][position[1]] = DEFUALT_BLOCK
-    for position in currentPositionOfTetromino:
-      board[position[0] + dX][position[1] + dY] = self.board[position[0]][position[1]]
+    try:
+      for position in currentPositionOfTetromino:
+        board[position[0]][position[1]] = mShapes.DEFUALT_BLOCK
+      for position in currentPositionOfTetromino:
+        board[position[0] + dX][position[1] + dY] = self.board[position[0]][position[1]]
+    except IndexError:
+      return -200
     
     self.board = board
 
-game = Game()
 
+game = Game(width =11)
+
+# while True:
+#   for event in pygame.event.get():
+#     if event.type == SECONDPASSED:
+#         os.system("clear")
+#         printBoard(game.board)
+
+#   if game.currentTetrominoFalling == None:
+#       spawmedTetromino = game.spawnTetromino()
+      
+#   game.moveTetromino(game.currentTetrominoFalling["id"], 1, 0)
 
 if game.currentTetrominoFalling == None:
     spawmedTetromino = game.spawnTetromino()
-    print("Spawned Tetromino:", spawmedTetromino)
 
-
-
-    
-print(game.currentTetrominoFalling["shape"].name)
 printBoard(game.board)
-game.moveTetromino(game.currentTetrominoFalling["id"], 1, 0)
-printBoard(game.board)
-time.sleep(0.5)
-# os.system("clear")
+
+running = True
+timeRunning = 0 #in seconds
+while running:
+  for event in pygame.event.get():
+    if event.type == pygame.QUIT: running = False
+    if event.type == SECONDPASSED:
+      game.moveTetromino(game.currentTetrominoFalling["id"], 0, -1)
+      timeRunning += 1
+      os.system("clear")
+      printBoard(game.board)
+      print("time running:", timeRunning)
+
+
+    game.screen.fill(GRAY)
+    game.draw()
+    pygame.display.flip()
+  
+  
