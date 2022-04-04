@@ -4,8 +4,9 @@ ERRORS
 -200 = IndexError
 -100 = Hit an object
 
-
 '''
+
+from turtle import shape
 import pygame
 import random
 import copy, time, os
@@ -36,17 +37,16 @@ SECONDPASSED = pygame.USEREVENT + 1
 #other
 PRINT_PERMANENT = ""
 
-def coordinates_to_pixel_loc(postion):  # maybe think of a better name
+def coordinates_to_pixel_loc(postion: list):  # maybe think of a better name
     postion = list(postion)
     postion[0] = postion[0] * SPRITE_SIZE
     postion[1] = postion[1] * SPRITE_SIZE
     return (postion[0], postion[1])
 
-def printShape(shape):
+def printShape(shape: Shape) -> None:
   length_x = len(shape.shape[shape.currentRotation][0])
   length_y = len(shape.shape[shape.currentRotation])
-  print("\nPrinting:", shape.name)
-  
+  print("\nPrinting:", shape.name)  
   for y in range(0, length_y):
     for x in range(0, length_x):
       print(shape.shape[shape.currentRotation][y][x].color.value, end = ' ')      
@@ -69,9 +69,10 @@ class Game():
       self.width = width
       self.height = height
       self.numberOfTetrominosSpawned = 0
-      self.currentTetrominoFalling = None
+      self.currentTetrominoFalling = {"shape": Shape(0, 0, 0, 0), "id": -1}
       self.size = (width * SPRITE_SIZE + 2, height * SPRITE_SIZE)
       self.screen = pygame.display.set_mode(self.size)
+      self.allShapesCreated = [] #list of all Shape Objects
       pygame.time.set_timer(SECONDPASSED, 1000)
   #-----set up board -------------
       row = []
@@ -81,117 +82,107 @@ class Game():
           self.board.append(row.copy())
           row.clear()
   #---------------------------------
+  def _removeID(self, ID):
+    for colum in self.board:
+      for mBlock in colum:
+        if mBlock.shapeID == ID: self.board[mBlock.location[0]][mBlock.location[1]] = Block()
   
-  def drawDrawShapeAtLocation(self, location, blockID, Tetromino = None):
-    #create copy of the board which will replace the actual board if the fuction doesnt encounter errors
+  def drawShapeAtLocation(self, location: list, blockID: int) -> int:
+    #create copy of the board which will replace the actual board if the function doesnt encounter errors
     board = copy.deepcopy(self.board)
-    #assumes tetormino is a shape object)
-    if Tetromino == None:
-      Tetromino = self.currentTetrominoFalling[0]
-    y_lengthOfTetromino = len(Tetromino.shape[Tetromino.currentRotation])
-    x_lengthOfTetromino = len(Tetromino.shape[Tetromino.currentRotation][0])
+    Tetromino: Shape = self.currentTetrominoFalling["shape"]
+
     j = 0 #x
     i = 0 #y
     
     for y in range(location[1], location[1] + Tetromino.yLength):
       for x in range(location[0], location[0]+ Tetromino.xLength):
-
         ignoreCurrentBlock = False
 
-
         try: #incase we go outside of the bounds
-
           if self.board[x][y].color != Colors.NO_COLOR: #check to make sure it doesnt draw on an occupied space
             return -100
           if Tetromino.shape[Tetromino.currentRotation][j][i].value == 0: #will wont draw over the board if the value in the shape is NO_COLOR
             ignoreCurrentBlock = True
-
           if ignoreCurrentBlock == False:
-
               Block = Tetromino.shape[Tetromino.currentRotation][j][i]
               Block.shapeID = blockID
               Block.location = [x, y]
               board[x][y] = Block
-
         except IndexError: #return -200 if we go outside of the bounds
           print("Draw Shape Function went out of range of the board at:", f"[{x}, {y}]")
           return -200
 
-
         i += 1
       j += 1
       i = 0
+    self.currentTetrominoFalling["shape"].lastPositionDrawn = location
+    del Tetromino
     self.board = board
+    return 0
   
   def draw(self):
-    for collum in self.board:
-      for Block in collum:
-        if Block.color != Colors.NO_COLOR:
+    for colum in self.board:
+      for Block in colum:
+
+        if Block.color == Colors.CYAN:
+          self.screen.blit(img_Cyan, coordinates_to_pixel_loc(Block.location))
+        if Block.color == Colors.BLUE:
           self.screen.blit(img_Blue, coordinates_to_pixel_loc(Block.location))
-       
-  def spawnTetromino(self, Tetromino=random.choice(shapes)):
+        if Block.color == Colors.ORANGE:
+          self.screen.blit(img_Orange, coordinates_to_pixel_loc(Block.location))
+        if Block.color == Colors.YELLOW:
+          self.screen.blit(img_Yellow, coordinates_to_pixel_loc(Block.location))
+        if Block.color == Colors.RED:
+          self.screen.blit(img_Red, coordinates_to_pixel_loc(Block.location))
+        if Block.color == Colors.PURPLE:
+          self.screen.blit(img_Purple, coordinates_to_pixel_loc(Block.location))
+        if Block.color == Colors.GREEN:
+          self.screen.blit(img_Green, coordinates_to_pixel_loc(Block.location))
+
+  def spawnTetromino(self, Tetromino=random.choice(shapes)) -> str:
     self.numberOfTetrominosSpawned += 1
     Tetromino.id = self.numberOfTetrominosSpawned
     self.currentTetrominoFalling = {"shape": Tetromino, "id": Tetromino.id}
-    print(f"spawming {Tetromino.name}")
-    self.drawDrawShapeAtLocation([(self.width // 2) - 2, 0], Tetromino.id, Tetromino)
+    print(f"spawning {Tetromino.name}")
+    self.drawShapeAtLocation([(self.width // 2) - 2, 0], Tetromino.id)
+    self.currentTetrominoFalling["shape"].lastPositionDrawn = [(self.width // 2) - 2, 0]
     return Tetromino.name
   
-  def moveTetromino(self, TetrominoID, dX, dY): #delta x and delta y
-    currentPositionOfTetromino = []
-    #------- find current postions of falling tetromino -------
-    for collum in self.board:
-      for Block in collum:
-        if Block.shapeID == TetrominoID:
-          currentPositionOfTetromino.append(Block.location)
-    #----------------------------------------------------------      
-    
-    board = copy.deepcopy(self.board)
-    
-    try:
-      for position in currentPositionOfTetromino:
-        board[position[0]][position[1]] = mShapes.DEFUALT_BLOCK
-      for position in currentPositionOfTetromino:
-        board[position[0] + dX][position[1] + dY] = self.board[position[0]][position[1]]
-    except IndexError:
-      return -200
-    
-    self.board = board
+  def moveTetromino(self, dX: int, dY: int): #delta x and delta y; Tetromino to move is like current Tetromino Falling property except it is not bound to the current Tetromino falling, i.e it can be any Tetromino
+    if self.currentTetrominoFalling["shape"] == None or self.currentTetrominoFalling["id"] == None: 
+      print("Move Tetromino Function tried to move current Falling Tetromino however it is a none type")
+      return -1
+    TetObj: Shape = self.currentTetrominoFalling['shape']
+    TetID: int = self.currentTetrominoFalling['id']
+    lastPositionDrawn = TetObj.lastPositionDrawn
+    self._removeID(TetID)
+    self.drawShapeAtLocation([lastPositionDrawn[0] + dX, lastPositionDrawn[1] + dY], TetID)
+game = Game()
 
-
-game = Game(width =11)
-
-# while True:
-#   for event in pygame.event.get():
-#     if event.type == SECONDPASSED:
-#         os.system("clear")
-#         printBoard(game.board)
-
-#   if game.currentTetrominoFalling == None:
-#       spawmedTetromino = game.spawnTetromino()
-      
-#   game.moveTetromino(game.currentTetrominoFalling["id"], 1, 0)
-
-if game.currentTetrominoFalling == None:
-    spawmedTetromino = game.spawnTetromino()
-
-printBoard(game.board)
 
 running = True
-timeRunning = 0 #in seconds
+dx, dy = 0, 0
+game.spawnTetromino()
 while running:
   for event in pygame.event.get():
     if event.type == pygame.QUIT: running = False
-    if event.type == SECONDPASSED:
-      game.moveTetromino(game.currentTetrominoFalling["id"], 0, -1)
-      timeRunning += 1
-      os.system("clear")
-      printBoard(game.board)
-      print("time running:", timeRunning)
 
+    if event.type == pygame.KEYDOWN:            
+        if event.key == pygame.K_UP:
+            pass
+        if event.key == pygame.K_DOWN:
+            game.moveTetromino(0, 1)
+        if event.key == pygame.K_RIGHT:
+            game.moveTetromino(1, 0)
+        if event.key == pygame.K_LEFT:
+            game.moveTetromino(-1, 0)
+      
+
+    
+    if event.type == SECONDPASSED:
+      game.moveTetromino(0, 1)
 
     game.screen.fill(GRAY)
     game.draw()
     pygame.display.flip()
-  
-  

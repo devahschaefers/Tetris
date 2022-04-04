@@ -13,22 +13,26 @@ class Block:
     self.color = color
     self.value = color.value
     self.location = location
-    self.shapeID = shapeID #0 means empty class Shape(Block): from block import Block
+    self.shapeID = shapeID #0 means empty class
     
 class Shape(Block):
     def __init__(self, shape, color, name, id = "NOT ON THE BOARD"):
       Block.__init__(self, color, shapeID = id)
-      self.shape = shape
-      self.id = id # will be assigned when it is spawned
-      self.name = name
-      self.currentRotation = 0
-      self.yLength = len(self.shape[self.currentRotation])
-      self.xLength = len(self.shape[self.currentRotation][0])
+      self.shape : list = shape
+      self.id : int = id # will be assigned when it is spawned
+      self.name : str= name
+      self.currentRotation : int = 0
+      self.yLength : int = len(self.shape[self.currentRotation])
+      self.xLength : int = len(self.shape[self.currentRotation][0])
+      self.lastPositionDrawn : list = [-100, -100]
 
       if (color.value != 0):
         self.isEmpty = False
       else:
         self.isEmpty = True
 
-    def rotate(self, direction):
-        pass
+    def rotate(self):
+        if self.currentRotation < 3:
+          self.currentRotation += 1
+        else:
+          self.currentRotation = 0
