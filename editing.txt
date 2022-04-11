@@ -1,20 +1,20 @@
 rawShapes = {
     "oBlock": [
                [ 
-                [Block(Colors.NO_COLOR), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(Colors.NO_COLOR)], 
-                [Block(Colors.NO_COLOR), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(Colors.NO_COLOR)]],
+                [Block(Colors.YELLOW), Block(Colors.YELLOW), Block(Colors.NO_COLOR)]],
+                [Block(Colors.YELLOW), Block(Colors.YELLOW), Block(Colors.NO_COLOR)], 
       
                [ 
-                [Block(Colors.NO_COLOR), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(Colors.NO_COLOR)], 
-                [Block(Colors.NO_COLOR), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(Colors.NO_COLOR)]],
+                [Block(Colors.YELLOW), Block(Colors.YELLOW), Block(Colors.NO_COLOR)], 
+                [Block(Colors.YELLOW), Block(Colors.YELLOW), Block(Colors.NO_COLOR)]],
       
                [ 
-                [Block(Colors.NO_COLOR), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(Colors.NO_COLOR)], 
-                [Block(Colors.NO_COLOR), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(Colors.NO_COLOR)]],
+                [Block(Colors.YELLOW), Block(Colors.YELLOW), Block(Colors.NO_COLOR)], 
+                [Block(Colors.YELLOW), Block(Colors.YELLOW), Block(Colors.NO_COLOR)]],
       
                [ 
-                [Block(Colors.NO_COLOR), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(Colors.NO_COLOR)], 
-                [Block(Colors.NO_COLOR), Block(Colors.YELLOW), Block(Colors.YELLOW), Block(Colors.NO_COLOR)]]
+                [Block(Colors.YELLOW), Block(Colors.YELLOW), Block(Colors.NO_COLOR)], 
+                [Block(Colors.YELLOW), Block(Colors.YELLOW), Block(Colors.NO_COLOR)]]
               ],
     "iBlock": [ 
                 [
@@ -155,3 +155,7 @@ rawShapes = {
                 ]
               ]
 }
+
+
+
+0 0 0 0 0 0 0 0 0 0

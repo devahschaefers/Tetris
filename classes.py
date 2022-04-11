@@ -16,14 +16,12 @@ class Block:
     self.shapeID = shapeID #0 means empty class
     
 class Shape(Block):
-    def __init__(self, shape, color, name, id = "NOT ON THE BOARD"):
+    def __init__(self, shape = [], color = Colors.NO_COLOR, name = "Not Initialized", id = "NOT ON THE BOARD"):
       Block.__init__(self, color, shapeID = id)
       self.shape : list = shape
       self.id : int = id # will be assigned when it is spawned
       self.name : str= name
       self.currentRotation : int = 0
-      self.yLength : int = len(self.shape[self.currentRotation])
-      self.xLength : int = len(self.shape[self.currentRotation][0])
       self.lastPositionDrawn : list = [-100, -100]
 
       if (color.value != 0):
@@ -31,6 +29,9 @@ class Shape(Block):
       else:
         self.isEmpty = True
 
+    def yLength(self) -> int: return len(self.shape[self.currentRotation])
+    def xLength(self) -> int: return len(self.shape[self.currentRotation][0])
+    
     def rotate(self):
         if self.currentRotation < 3:
           self.currentRotation += 1
