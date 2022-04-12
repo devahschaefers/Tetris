@@ -1,4 +1,5 @@
 from enum import Enum
+import logging
 class Colors(Enum):
   CYAN = 1
   BLUE = 2
@@ -32,8 +33,15 @@ class Shape(Block):
     def yLength(self) -> int: return len(self.shape[self.currentRotation])
     def xLength(self) -> int: return len(self.shape[self.currentRotation][0])
     
-    def rotate(self):
-        if self.currentRotation < 3:
-          self.currentRotation += 1
+    def rotate(self, arg = 0):
+        if arg == 0:
+          if self.currentRotation < 3:
+            self.currentRotation += 1
+          else:
+            self.currentRotation = 0
         else:
-          self.currentRotation = 0
+          if self.currentRotation != 0:
+            self.currentRotation -= 1
+          else:
+            self.currentRotation = 4
+          logging.debug(f"rotate function was passed with an argument other than 0 and used a different rotation, {self.currentRotation}")

@@ -6,13 +6,17 @@ ERRORS
  100 = Hit bottom
 '''
 
+from operator import index, truediv
 from turtle import shape
 import pygame
 import random
-import copy, time, os, sys
+import copy, time, os, sys, logging
 from classes import Colors, Shape, Block
 import mShapes
 from mShapes import shapes
+
+
+logging.basicConfig(level=logging.DEBUG)
 
 pygame.init()
 pygame.display.set_caption('Tetris')
@@ -88,7 +92,18 @@ class Game():
     for colum in self.board:
       for mBlock in colum:
         if mBlock.shapeID == ID: self.board[mBlock.location[0]][mBlock.location[1]] = Block()
-  
+
+  def _getValuesInRow(self, row: int) -> list:
+    values: list = []
+    try:
+      for x in range(self.width):
+        values.append(self.board[x][row])
+    except IndexError:
+      logging.error(f"Get Value Function went out of range with argument {str(row)}")
+    
+    return values
+
+
   def drawShapeAtLocation(self, location: list, blockID: int) -> int:
     #create copy of the board which will replace the actual board if the function doesn't encounter errors
     board = copy.deepcopy(self.board)
@@ -101,13 +116,12 @@ class Game():
       for x in range(location[0], location[0]+ Tetromino.xLength()):
         ignoreCurrentBlock = False
         if y > self.height - 1:
-          print("hit the bottom at", y)
-          print(f"returned 100 at {x}, {y}")
+          logging.debug("hit the bottom at", y)
+          logging.debug(f"returned 100 at {x}, {y}")
           return 100
         if x >= 0 and x < self.width: #incase we go outside of the bounds x bounds
           if self.board[x][y].color != Colors.NO_COLOR and not Tetromino.shape[Tetromino.currentRotation][j][i].value == 0: #check to make sure it doesn't draw on an occupied space
             return -100
-          print("went out of range at", j, i)
           if Tetromino.shape[Tetromino.currentRotation][j][i].value == 0: #will wont draw over the board if the value in the shape is NO_COLOR
             ignoreCurrentBlock = True
           if ignoreCurrentBlock == False:
@@ -157,7 +171,7 @@ class Game():
     TetrominoName = Tetromino.name
     return TetrominoName
   
-  def moveTetromino(self, dX: int, dY: int): #delta x and delta y; Tetromino to move is like current Tetromino Falling property except it is not bound to the current Tetromino falling, i.e it can be any Tetromino
+  def moveTetromino(self, dX: int, dY: int) -> int: #delta x and delta y; Tetromino to move is like current Tetromino Falling property except it is not bound to the current Tetromino falling, i.e it can be any Tetromino
     if self.currentTetrominoFalling["shapeObj"] == None or self.currentTetrominoFalling["id"] == None: 
       print("Move Tetromino Function tried to move current Falling Tetromino however it is a none type")
       return -1
@@ -169,15 +183,36 @@ class Game():
     self._removeID(TetID)
     returnValueOfDraw : int = self.drawShapeAtLocation([lastPositionDrawn[0] + dX, lastPositionDrawn[1] + dY], TetID)
     if returnValueOfDraw != 0:
-      if returnValueOfDraw == 100 or returnValueOfDraw == -100:
+      if (returnValueOfDraw == 100 or returnValueOfDraw == -100) and dY > 0:
         pygame.event.post(pygame.event.Event(SPAWN_TETROMINO))
       self.board = board
+    return returnValueOfDraw
+
+  def clearRow(self, row: int) -> None:
+    values: list = self._getValuesInRow(row)
+    if all(elem != Block() for elem in values):
+      for x in range(self.width):
+        game.board[x][row] = Block()
+  
+  def checkForFullRow(self) -> list:
+    rows:list = []
+    for y in range(self.height):
+      append = True
+      for x in range(self.width):
+        if self.board[x][y].color == Colors.NO_COLOR:
+          append = False
+          break        
+      if append: rows.append(y)
+    return rows
+
+
 
 
 game = Game()
 
 running = True
 dx, dy = 0, 0
+secondsThatPassed = 0
 game.spawnTetromino()
 while running:
   for event in pygame.event.get():
@@ -185,19 +220,30 @@ while running:
 
     if event.type == pygame.KEYDOWN:            
         if event.key == pygame.K_UP:
-            game.currentTetrominoFalling["shapeObj"].rotate()
-            game.moveTetromino(0, 0)
+            game.currentTetrominoFalling['shapeObj'].rotate()
+            if (game.moveTetromino(0, 0) < 0): game.currentTetrominoFalling['shapeObj'].rotate(-1)
+
         if event.key == pygame.K_DOWN:
             game.moveTetromino(0, 1)
         if event.key == pygame.K_RIGHT:
             game.moveTetromino(1, 0)
         if event.key == pygame.K_LEFT:
             game.moveTetromino(-1, 0)
-    
     if event.type == SECONDPASSED:
       game.moveTetromino(0, 1)
+      secondsThatPassed += 1
+      print(secondsThatPassed)
+      logging.debug(f"current Tetromino: {game.currentTetrominoFalling['shapeObj'].name} Rotation: {game.currentTetrominoFalling['shapeObj'].currentRotation}")
+    
+    
     if event.type == SPAWN_TETROMINO:
       game.spawnTetromino()
+
+    rowsToRemove = game.checkForFullRow()
+    logging.debug(f"Rows To Remove: {rowsToRemove}")
+    for row in rowsToRemove:
+      logging.debug(f"removing row: {row}")
+      game.clearRow(row)
 
     game.screen.fill(GRAY)
     game.draw()
