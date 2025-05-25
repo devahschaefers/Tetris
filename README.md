@@ -1,2 +1,2 @@
 # Tetris
-Tetris game for AP Comperr Science Principles Performance Task
+Tetris game for AP Computer Science Principles Performance Task
